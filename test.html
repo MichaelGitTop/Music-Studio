@@ -1,0 +1,58 @@
+<html ng-app="ionicApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    
+    <title>菜鸟教程(runoob.com)</title>
+    <link href="libs/plug/ionic/css/ionic.min.css" rel="stylesheet">
+    <script src="libs/plug/ionic/js/ionic.bundle.min.js"></script>
+     <style type="text/css">
+    body {
+      cursor: url('http://www.runoob.com/try/demo_source/finger.png'), auto;
+    }
+    </style>
+    <script type="text/javascript">
+    angular.module('ionicApp', ['ionic'])
+
+    .controller('MainCtrl', function($scope) {
+
+      $scope.clientSideList = [
+        { text: "Backbone", value: "bb" },
+        { text: "Angular", value: "ng" },
+        { text: "Ember", value: "em" },
+        { text: "Knockout", value: "ko" }
+      ];
+      
+//    $scope.data = {
+//      clientSide: 'bb'
+//    };
+
+	$scope.data = 'ko';
+			
+    });
+    </script>
+   
+  </head>
+
+  <body ng-controller="MainCtrl">
+             
+    <ion-content>
+      
+      <div class="list">
+        
+        <div class="item item-divider"> 
+          选取的值为: {{ data.clientSide }}
+        </div>
+        
+        <ion-radio ng-repeat="item in clientSideList"
+                   ng-value="item.value"
+                   ng-model="data">
+          {{ item.text }}
+        </ion-radio>
+        
+      </div>
+      
+    </ion-content>
+    
+  </body>
+</html>

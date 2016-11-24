@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Music</title>
+		<!--plugin css-->
+		<link rel="stylesheet" href="libs/plug/bootstrap-3.3.0-dist/dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="libs/plug/font-awesome-4.6.3/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="libs/plug/ionic/css/ionic.min.css" />
+		<!--auto css-->
+		<link rel="stylesheet" type="text/css" href="libs/css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="libs/css/index.css" />
+		<!--plugin js-->
+		<script type="text/javascript" src="libs/plug/jquery-2.1.1.min.js"></script>
+		<script src="libs/plug/ionic/js/ionic.bundle.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--auto js-->
+		<script src="libs/js/angular.global.js" type="text/javascript" charset="utf-8"></script>
+		<script src="libs/js/global.js" type="text/javascript" charset="utf-8"></script>
+		<script src="libs/js/index.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+
+	<body ng-app="myApp" ng-controller="ctrl">
+		
+		<ion-side-menus>
+			<!-- 中间内容 -->
+			<ion-side-menu-content>
+				
+				<div class="bar bar-header header_title">
+					<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+					<div class="h1 title">Music Studio</div>
+					<button menu-toggle="right" class="button button-icon "><i class="fa fa-heart-o"></i></button>
+				</div>
+				<div class="bar item-input-inset search">
+					<label class="item-input-wrapper">
+					    <i class="icon ion-ios-search placeholder-icon"></i>
+					    <input type="search" placeholder="Michael Jackson" ng-focus="search()" />
+					</label>
+					<button class="button button-clear" ng-click="searchOut()">取消</button>
+				</div>
+
+				<ion-content padding="true" class="m_content">
+					<ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh()"></ion-refresher>
+					<!--加载的歌曲列表-->
+					<ion-list>
+
+					    <a class="item item-avatar" href="#" ng-repeat="sing in songs" ng-click="play_song(sing,$index)">
+					      <img src="{{sing.albumpic_small}}">
+					      <h2 ng-bind="sing.songname"></h2>
+					      <p ng-bind="sing.singername"></p>
+					    </a>
+						
+					</ion-list>
+				</ion-content>
+
+				<!--尾部播放器控件-->
+				<div class="tabs tabs-icon-top footer">
+					<div class="player_img"><img src="{{onPlay_pic}}"/></div>
+					<div class="player_ctrl">
+						<div class="rate">
+							<input type="range" name="volume" min="0" max="100" value="0">
+							<div class="rate_bc"></div>
+						</div>
+						<div class="ctrl">
+							<div class="song_detail fl">
+								<p ng-bind="onPlay_song"></p>
+								<p ng-bind="onPlay_singer"></p>
+							</div>
+							<div class="list fr"><i class="fa fa-list-ul"></i></div>
+							<div class="next fr"><i class="fa fa-fast-forward" ng-click="next_song()"></i></div>
+							<div class="play fr"><i class="fa fa-play" ng-click="play()" ng-class=" play_actived ? 'fa fa-pause' : 'fa fa-play' "></i></div>
+						</div>
+
+
+					</div>
+				</div>
+				
+				<!--播放列表-->
+				<div class="playList">
+					<div class="listTitle">播放列表<span>30</span></div>
+					<div class="listContent">
+						<div class="listSong" ng-repeat="song in songsList">
+							<div class="listIndex fl" ng-bind="$index+1"></div>
+							<div class="listSongInfo fl">
+								<p ng-bind="song.songname" ng-click="playListSong(song,$index)"></p>
+					      		<p ng-bind="song.singername" ng-click="playListSong(song,$index)"></p>
+								<div class="listSongDele"><i class="fa fa-trash-o" ng-click="deleSong($index)"></i></div>
+							</div>
+						</div>
+						
+						<div class="listSong" ng-hide="songsList">
+							<div class="listIndex fl" style="color: #c15a52;"><i class="fa fa-headphones" style="font-size: 22px; margin-top: 14px;"></i></div>
+							<div class="listSongInfo fl">
+								<p style="color: #c15a52;">播放列表为空</p>
+					      		<p>请播放一首歌曲来添加</p>
+								<div class="listSongDele"></div>
+							</div>
+						</div>
+						
+						
+						
+					</div>
+				</div>
+				
+			</ion-side-menu-content>
+
+			
+			<!-- 左侧菜单 -->
+			<ion-side-menu side="left" width="180" class="left_bar">
+				<div class="bar bar-header bar-dark">
+					<h1 class="title">音乐排行榜</h1>
+				</div>
+				<ion-content class="left_content">
+					<ion-list>
+						
+						<ion-radio ng-repeat="item in musicType" ng-value="item.value" ng-model="defalutType">{{item.text}}</ion-radio>
+						
+					</ion-list>
+				</ion-content>
+			</ion-side-menu>
+
+			<!-- 右侧菜单 -->
+			<ion-side-menu side="right" width="180" class="right_bar">
+				<div class="bar bar-header bar-dark">
+					<h1 class="title">收藏列表</h1>
+				</div>
+				<ion-content class="right_content">
+					<ion-list>
+						
+						<!--<ion-radio ng-repeat="item in appName" ng-value="item.value" ng-model="appDefalut">{{item.text}}</ion-radio>-->
+						
+					</ion-list>
+				</ion-content>
+			</ion-side-menu>
+		</ion-side-menus>
+		
+		
+
+		<!--<ion-content>
+			
+			<div class="list">
+	
+			    <a class="item item-avatar" href="#">
+			      <img src="venkman.jpg">
+			      <h2>Venkman</h2>
+			      <p>Back off, man. I'm a scientist.</p>
+			    </a>
+			
+			</div>
+			
+			<div class="list card">
+	
+			  <div class="item item-avatar">
+			    <img src="avatar.jpg">
+			    <h2>Pretty Hate Machine</h2>
+			    <p>Nine Inch Nails</p>
+			  </div>
+			
+			  <div class="item item-image">
+			    <img src="cover.jpg">
+			  </div>
+			
+			  <a class="item item-icon-left assertive" href="#">
+			    <i class="icon ion-music-note"></i>
+			    Start listening
+			  </a>
+			
+			</div>
+		</ion-content>-->
+
+	</body>
+
+</html>

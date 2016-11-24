@@ -1,0 +1,17 @@
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.mask{
+    position: fixed; top: 44px; bottom: 49px; left: 0; right: 0; background-color: rgba( 0, 0, 0, 0.3 );
+    z-index: 99;
+}
+#loading_img{
+    z-index: 100; position: absolute; top: 50%; left: 50%;
+    transform: translate( -50%, -50% ); background: transparent;
+}
+#add_plus{
+    font-size: 16px; position: absolute; z-index: 200;
+}
